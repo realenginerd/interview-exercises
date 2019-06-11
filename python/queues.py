@@ -1,3 +1,8 @@
+# TODO: figure out how to test empty case
+# TODO: write real unit tests
+# TODO: factor out Queue
+
+
 class Queue:
     def __init__(self):
         self.items = []
@@ -15,32 +20,44 @@ class Queue:
         return len(self.items)
 
     def top(self):
-        return self.items[-1]
+        return self.items[0]
 
 
 class QueueStack:
     def __init__(self):
-        pass
+        self.queue = Queue()
 
     def push(self, item):
-        pass
+        self.queue.enqueue(item)
 
     def pop(self):
-        pass
+        new_queue = Queue()
+        result = self.queue.top()
+        dequeue = self.queue.dequeue()
+        while result != dequeue:
+            new_queue.enqueue(dequeue)
+            dequeue = self.queue.dequeue()
+        self.queue = new_queue
+        return result
 
     def is_empty(self):
-        pass
+        return self.queue.is_empty()
 
     def top(self):
-        pass
+        return self.queue.top()
 
 
 def test_queue_stack():
     stack = QueueStack()
     stack.push(1)
+    assert stack.top() == 1
+    stack.pop()
+    # assert stack.top() == False # TODO
+    stack.push(1)
     stack.push(2)
     stack.push(3)
     stack.push(4)
+    print(stack.top())
     assert stack.top() == 4
     stack.pop()
     assert stack.top() == 3
